@@ -27,6 +27,13 @@ class AgricultureSearchTool(BaseTool):
 
 agri_tool = AgricultureSearchTool()
 
+priority_agent = Agent(
+    role="Priority Classifier",
+    goal="Classify farmer query into Urgent, Normal, or Planning",
+    backstory="Expert in understanding farmer problems and urgency level",
+    llm=llm,
+    verbose=True
+)
 
 crop_advisor = Agent(
     role="Crop Advisor",

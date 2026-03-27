@@ -1,5 +1,6 @@
 from crewai import Task
-from agents import crop_advisor, disease_expert, policy_advisor
+from agents import crop_advisor, disease_expert, policy_advisor,priority_agent
+
 
 crop_task = Task(
     description="""
@@ -38,12 +39,35 @@ policy_task = Task(
     description="""
 Farmer Question: {query}
 
-List government schemes that may help farmers.
+Explain government schemes in simple language.
 
-Explain benefits simply.
+Do NOT output JSON
+Do NOT use structured format like lists with symbols
+
+Example:
+You can apply for PM-KISAN scheme which gives financial support to farmers. Also, you may benefit from crop insurance schemes.
+
+Now generate answer:
 """,
-
-    expected_output="List of government agriculture schemes with short explanation.",
-
+    expected_output="Simple explanation of schemes in paragraph.",
     agent=policy_advisor
+)
+
+
+priority_task = Task(
+    description="""
+Analyze the farmer query and classify it into ONE category:
+
+- Urgent → if disease, pest, sudden damage
+- Normal → general farming advice
+- Planning → schemes, profit, crop selection
+
+Return ONLY one word:
+Urgent OR Normal OR Planning
+
+Farmer Question:
+{query}
+""",
+    expected_output="One word: Urgent or Normal or Planning",
+    agent=priority_agent
 )
