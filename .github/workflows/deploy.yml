@@ -1,0 +1,24 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy on EC2
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: 3.89.4.191
+        username: ubuntu
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+          cd Agriculture-Triagent-Support-System
+          git pull origin main
+          docker stop $(docker ps -q) || true
+          docker rm $(docker ps -a -q) || true
+          docker build -t agri-ai .
+          docker run -d -p 80:8501 --env-file .env agri-ai
