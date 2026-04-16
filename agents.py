@@ -1,6 +1,5 @@
 from crewai import Agent
 from crewai.tools import BaseTool
-# from langchain_groq import ChatGroq
 from crewai import LLM
 from rag_setup import retriever
 from dotenv import load_dotenv
@@ -14,11 +13,6 @@ llm = LLM(
     api_key=os.getenv("GROQ_API_KEY")
 )
 
-# llm = ChatGroq(
-#     model="groq/llama-3.1-8b-instant",
-#     temperature=0.3,
-#     api_key=os.getenv("GROQ_API_KEY")
-# )
 
 class AgricultureSearchTool(BaseTool):
 
