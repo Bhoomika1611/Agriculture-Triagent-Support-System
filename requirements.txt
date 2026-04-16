@@ -9,3 +9,5 @@ pypdf
 chromadb
 streamlit
 litellm
+crewai
+crewai-tools
