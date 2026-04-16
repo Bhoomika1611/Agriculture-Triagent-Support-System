@@ -219,3 +219,4 @@ Priority: {priority}
 # -------------------------
 st.markdown("---")
 st.markdown("⚡ Built with CrewAI + RAG + Groq")
+st.write("CI/CD working 🚀")
