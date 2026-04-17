@@ -19,6 +19,9 @@ jobs:
           script: |
             set -e
 
+            echo "Testing connection..."
+            sleep 10
+
             docker pull bhoomika1611/agri-ai
 
             docker stop agri-container || true
