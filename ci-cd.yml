@@ -1,0 +1,19 @@
+- name: Deploy to EC2
+  uses: appleboy/ssh-action@v0.1.6
+  with:
+    host: 3.89.4.191
+    username: ubuntu
+    key: ${{ secrets.EC2_KEY }}
+    script: |
+      set -e
+
+      docker pull ${{ secrets.DOCKER_USERNAME }}/agri-ai
+
+      docker stop agri-ai || true
+      docker rm agri-ai || true
+
+      docker run -d \
+        --name agri-ai \
+        -p 80:8501 \
+        -e OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+        ${{ secrets.DOCKER_USERNAME }}/agri-ai
