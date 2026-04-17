@@ -4,9 +4,14 @@ provider "aws" {
 
 resource "aws_instance" "agri_server" {
   ami           = "ami-0c02fb55956c7d316"
-  instance_type = "t2.micro"
+  instance_type = "m7i-flex.large"
 
   key_name = "agri-key"
+
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp2"
+  }
 
   user_data = <<-EOF
               #!/bin/bash
