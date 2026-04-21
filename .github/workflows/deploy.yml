@@ -1,3 +1,4 @@
+```yaml
 name: Deploy to EC2
 
 on:
@@ -10,25 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy to EC2
+      - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.EC2_HOST }}
+          host: ${{ secrets.EC2_HOST }}   # <-- Elastic IP yahan hona chahiye
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             set -e
 
-            echo "Testing connection..."
-            sleep 10
+            echo "🚀 Connected to EC2"
 
+            # Pull latest image
+            echo "📦 Pulling latest Docker image..."
             docker pull bhoomika1611/agri-ai
 
+            # Stop and remove old container (safe)
+            echo "🛑 Stopping old container (if exists)..."
             docker stop agri-container || true
             docker rm agri-container || true
 
+            # Run new container
+            echo "✅ Starting new container..."
             docker run -d \
+              --restart always \
               -p 8501:8501 \
               --name agri-container \
               -e GROQ_API_KEY=${{ secrets.GROQ_API_KEY }} \
               bhoomika1611/agri-ai
+
+            echo "🎉 Deployment successful!"
+```
